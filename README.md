@@ -3,7 +3,10 @@
  なんと起動するだけで使える！すごい！かんたん！
 
 ## なんやこれ
- batchファイルやね
+ batchファイルだけでできる色々な変換ツール
+
+## 使い方
+　なんと起動するだけで使える！すごい！かんたん！
 
 ## 必要なもんなに？
  - [FFmpeg (ffmpeg.exe)](https://github.com/BtbN/FFmpeg-Builds/releases)
