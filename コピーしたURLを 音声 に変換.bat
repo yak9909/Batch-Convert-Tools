@@ -3,17 +3,7 @@ setlocal
 
 for /f "usebackq delims=" %%a in (`powershell get-clipboard`) do set url=%%a
 
-echo メディア情報 %url% を取得します…
-
-for /f "usebackq delims=" %%a in (`yt-dlp -e "%url%"`) do set title=%%a
-
-echo メディアタイトル... %title%
-
-for /f "usebackq delims=" %%a in (`yt-dlp --print "%%(uploader)s - %title% [%%(id)s]" %url%`) do set filename=%%a
-for %%a in (^\ ^/ ^: ^* ^? ^" ^< ^> ^|) do call set filename=%%filename:%%a=%%
-
-echo メディア情報の取得が完了しました
-echo;
+echo %url% をダウンロードします…
 
 :While01
 echo 保存するファイルの形式を指定してください
@@ -37,4 +27,4 @@ echo ファイル形式は1から3までを指定して下さい
 goto While01
 
 :EndWhile01
-yt-dlp -x --audio-format %filetype% -o "%filename%.%filetype%" %url%
+yt-dlp -x --audio-format %filetype% %url%

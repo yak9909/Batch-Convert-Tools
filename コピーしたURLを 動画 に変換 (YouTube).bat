@@ -3,17 +3,7 @@ setlocal
 
 for /f "usebackq delims=" %%a in (`powershell get-clipboard`) do set url=%%a
 
-echo メディア情報 %url% を取得します…
-
-for /f "usebackq delims=" %%a in (`yt-dlp -e "%url%"`) do set title=%%a
-
-echo メディアタイトル... %title%
-
-for /f "usebackq delims=" %%a in (`yt-dlp --print "%%(uploader)s - %title% [%%(id)s]" %url%`) do set filename=%%a
-for %%a in (^\ ^/ ^: ^* ^? ^" ^< ^> ^|) do call set filename=%%filename:%%a=%%
-
-echo メディア情報の取得が完了しました
-echo;
+echo %url% をダウンロードします…
 
 :While01
 echo 解像度を指定してください
@@ -54,6 +44,9 @@ set /p start="開始時間: "
 echo 時:分:秒 のように指定してください
 set /p kirinuki="終了時間: "
 
+for /f "usebackq delims=" %%a in (`yt-dlp --print "%%(uploader)s - %title% [%%(id)s]" %url%`) do set filename=%%a
+for %%a in (^\ ^/ ^: ^* ^? ^" ^< ^> ^|) do call set filename=%%filename:%%a=%%
+
 for /f "usebackq delims=" %%c in (`yt-dlp -g "%url%" -f "[height<=%res%][fps<=60]"`) do set time_url=%%c
 ffmpeg -ss %start% -to %kirinuki% -i "%time_url%" -c copy "(trimmed) %filename%.mp4"
 exit
@@ -64,4 +57,4 @@ goto While01
 
 :EndWhile02
 @echo on
-yt-dlp %url% -f "[height<=%res%][fps<=60]" -o "%filename%.mp4" --no-mtime
+yt-dlp -f "[height<=%res%][fps<=60]" %url%
